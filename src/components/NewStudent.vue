@@ -31,16 +31,16 @@ export default {
   data() {
     return {
       firstName: "",
-      lastName:""
+      lastName: ""
     };
   },
   methods: {
     async submit() {
-      axios.post("http://localhost:3000/students", { firstName: this.firstName, lastName: this.lastName });
+      await axios.post("http://localhost:3000/students", {firstName: this.firstName, lastName: this.lastName})
     }
   },
   components: {
-      Students
+    Students
   }
 };
 </script>

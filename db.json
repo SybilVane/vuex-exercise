@@ -1,22 +1,19 @@
 {
   "students": [
     {
-      "firstName": "Alex",
-      "lastName": "Hells",
+      "firstName": "Gina",
+      "lastName": "Monuel",
       "id": 0
     },
     {
+      "firstName": "Alex",
+      "lastName": "Hello",
       "id": 1
     },
     {
-      "firstName": "Hae",
-      "lastName": "Mobb",
+      "firstName": "Bob",
+      "lastName": "Mecky",
       "id": 2
-    },
-    {
-      "firstName": "",
-      "lastName": "",
-      "id": 3
     }
   ]
 }
