@@ -4,6 +4,19 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
+const errorSystem = {
+    state: {
+        show: false,
+        text: ''
+    },
+    mutations: {
+        showError(state, message) {
+            state.show = true;
+            state.text = message;
+        }
+    }
+}
+
 export default new Vuex.Store({
     state: {
         students: []
@@ -31,12 +44,17 @@ export default new Vuex.Store({
         editStudent(state, student) {
             const index = state.students.findIndex(s => s.id === student.id);
             Vue.set(state.students, index, {...state.students[index], ...student})
-        }
+        },
     },
     actions: {
         async getStudents(context) {
-            const studentsFromAPI = (await axios.get('http://localhost:3000/students')).data;
-            context.commit('setStudents', studentsFromAPI)
+            try {
+                const studentsFromAPI = (await axios.get('http://localhost:3000/students')).data;
+                context.commit('setStudents', studentsFromAPI)
+            } catch(error) {
+                context.commit('showError', error)
+            }
+
         },
         async createStudent(context, payload) {
             const studentToAPI = (await axios.post("http://localhost:3000/students", payload)).data;
@@ -46,5 +64,8 @@ export default new Vuex.Store({
            const modifiedStudent = (await axios.put(`http://localhost:3000/students/${id}`, names)).data;
            context.commit('editStudent', modifiedStudent);
         }
+    },
+    modules: {
+        error: errorSystem,
     }
 })
