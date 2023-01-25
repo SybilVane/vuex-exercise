@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="$store.getters.isLoaded">
+    <div v-if="isLoaded">
       <v-flex sm8 offset-sm2>
         <v-card>
           <v-toolbar dark>
@@ -10,8 +10,9 @@
             <v-container>
               <v-layout>
                 <v-flex xs12 md4>
-                  <v-text-field v-model="student.firstName" label="First Name" required/>
-                  <v-text-field v-model="student.lastName" label="Last Name" required/>
+<!--                  if I used v-model here I would update name instantly and alter it outside the mutation-->
+                  <v-text-field @input="updateFirstName" :value="student.firstName" label="First Name" required/>
+                  <v-text-field @input="updateLastName" :value="student.lastName" label="Last Name" required/>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -29,25 +30,35 @@
 </template>
 
 <script>
-import axios from "axios";
 import Students from "./Students";
+import {mapGetters} from 'vuex';
 
 export default {
   data() {
-    return {};
+    return {
+      firstName: '',
+      lastName: '',
+    };
   },
   computed: {
+    ...mapGetters(['isLoaded']),
     student() {
       return this.$store.getters.findStudent(this.$route.params.id);
     }
   },
   methods: {
     async submit() {
-      axios.put(`http://localhost:3000/students/${this.$route.params.id}`, {
-        firstName: this.student.firstName,
-        lastName: this.student.lastName
-      });
-    }
+      const firstName = this.firstName || this.student.firstName;
+      const lastName = this.lastName || this.student.lastName;
+
+      await this.$store.dispatch('editStudent', {id: this.$route.params.id, names: {firstName, lastName}})
+    },
+    updateFirstName(value) {
+      this.firstName = value;
+    },
+    updateLastName(value) {
+      this.lastName = value;
+    },
   },
   components: {
     Students

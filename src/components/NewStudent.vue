@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import axios from "axios";
 import Students from "./Students";
+
 
 export default {
   data() {
@@ -36,8 +36,8 @@ export default {
   },
   methods: {
     async submit() {
-      await axios.post("http://localhost:3000/students", {firstName: this.firstName, lastName: this.lastName})
-    }
+      await this.$store.dispatch('createStudent', {firstName: this.firstName, lastName: this.lastName} )
+    },
   },
   components: {
     Students

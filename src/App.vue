@@ -15,7 +15,6 @@
 import NewStudent from "./components/NewStudent";
 import Students from "./components/Students";
 import EditStudent from "./components/EditStudent";
-import axios from "axios";
 
 export default {
   name: "App",
@@ -29,8 +28,8 @@ export default {
       //
     };
   },
-  async mounted() {
-    this.$store.state.students = (await axios.get('http://localhost:3000/students')).data;
+  async created() {
+    await this.$store.dispatch('getStudents');
   },
 };
 </script>
